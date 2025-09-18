@@ -25,4 +25,12 @@ public function showService($name):Response{
     return $this->render(view:'home/show.html.twig',parameters:['name'=>$name]);
 }
 
+ #[Route('/gotoindex', name: 'go_to_index')]
+    public function goToIndex(): Response
+    {
+    
+        return $this->redirectToRoute('hi');
+    }
+
+
 }
