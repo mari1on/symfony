@@ -1,0 +1,27 @@
+{{ nom|upper }}
+
+{{'&HELLO'|lower|trim('&')}}
+
+{%  set a="Hello" %}
+{{ a }}
+
+{#commentsire xDDDDDDD#}
+
+{%for i in 0..9%}
+    {{i}}
+{% endfor %} 
+
+{% set hour=14 %}
+{% if hour <12 %}
+    <p> hi </p>
+{% elseif hour <18 %}
+    <p>bon<p>
+{% else %}
+    <p> cbn <p>
+    {% if 'FABIEN' starts with 'F'%}
+        commnce par F 
+    {% endif %}
+{% endif %}
+
+<a href="{{path('listAuthors')}}">Link1</a>
+<a href="{{url('app_author')}}">Link2</a>

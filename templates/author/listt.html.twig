@@ -1,0 +1,11 @@
+{% for author in authors %}
+    <div>
+        <p>{{ author.username|upper }}</p>
+        <img src="{{ author.picture }}" alt="{{ author.username }}" width="100">
+        <h2>{{ author.username }}</h2>
+        <p>{{ author.email }}</p>
+        <p>Number of books: {{ author.nb_books }}</p>
+        <p>Total number of authors: {{ authors|length }}</p>
+        <a href="{{ path('listAuthors') }}">Link1</a>
+    </div>
+{% endfor %}
