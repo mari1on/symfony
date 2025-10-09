@@ -19,8 +19,8 @@ class Authorr
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $no = null;
+ 
+   
 
     public function getId(): ?int
     {

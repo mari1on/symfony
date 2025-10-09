@@ -1,0 +1,16 @@
+{# templates/author/addform.html.twig #}
+
+{{ form_start(form) }}
+{{form_label(form)}}
+{{form_widget(form.username)}}
+{{form_errors(form.username)}}
+{{form_label(form.email)}}
+{{form_widget(form.email)}}
+{{form_errors(form.email)}}
+
+
+{{ form_widget(form) }}
+<button type="submit">Save</button>
+{{ form_end(form) }}
+
+ 
