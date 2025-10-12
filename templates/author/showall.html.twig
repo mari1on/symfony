@@ -1,4 +1,4 @@
-<h1>List of Authors</h1>
+<h1>List of authors 𓂃˖˳·˖ ִֶָ ⋆🌷͙⋆ ִֶָ˖·˳˖𓂃 ִֶָ</h1>
 
 <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
     <tr style="background-color: darkred; color: white;">
@@ -13,7 +13,7 @@
         <td>{{ i.email }}</td>
         <td>
             <a href="{{ path('deleteAuthor', {'id': i.id}) }}">delete</a>
-            <a href="#">update</a>
+            <a href="{{ path('updateAuthor', {'id': i.id}) }}">update</a>
             <a href="{{ path('showDetails', {'id': i.id}) }}">show</a>
         </td>
     </tr>

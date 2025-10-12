@@ -76,6 +76,33 @@ final class AuthorrController extends AbstractController
             'authorr' => $authorr,
         ]);
     }
+
+
+#[Route('/updateAuthor/{id}', name: 'updateAuthor')]        
+public function updateAuthor($id, AuthorrRepository $repo, Request $request, ManagerRegistry $doctrine): Response
+{
+    $authorr = $repo->find($id);
+
+    if (!$authorr) {
+        throw $this->createNotFoundException('Author not found with id ' . $id);
+    }
+
+    $form = $this->createForm(AuthorrType::class, $authorr);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em = $doctrine->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('showall');
+    }
+
+    return $this->render('author/updateAuthor.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+
 #[Route('/addform', name: 'addform')]
 public function addform(Request $request, ManagerRegistry $doctrine ): Response
 {
@@ -86,7 +113,7 @@ public function addform(Request $request, ManagerRegistry $doctrine ): Response
     $form->handleRequest($request);
     if ($form->isSubmitted() && $form->isValid()) {
         // Sauvegarder les données dans la base
-        $em = $doctrine->getManager();
+        $em = $doctrine->getManager(); 
         $em->persist($author);
         $em->flush();
 
