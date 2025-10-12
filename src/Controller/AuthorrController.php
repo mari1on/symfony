@@ -11,6 +11,8 @@ use App\Entity\Authorr;
 use App\Form\AuthorrType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Book;
+use App\Form\BookType;
 
 
 final class AuthorrController extends AbstractController
@@ -24,14 +26,22 @@ final class AuthorrController extends AbstractController
     }
 
     #[Route('/showall', name: 'showall')]
-    public function showall(AuthorrRepository $repo): Response
-    {
-        $authorrs = $repo->findAll();
+   #[Route('/showall', name: 'showall')]
+public function showall(AuthorrRepository $repo, ManagerRegistry $doctrine): Response
+{
+    // Get all authors
+    $authorrs = $repo->findAll();
 
-        return $this->render('author/showall.html.twig', [
-            'list' => $authorrs,
-        ]);
-    }
+    // Get the Book repository and fetch all books
+    $bookRepo = $doctrine->getRepository(Book::class);
+    $books = $bookRepo->findAll(); // ✅ now $books is defined
+
+    return $this->render('author/showall.html.twig', [
+        'list' => $authorrs,
+        'listbook' => $books, // ✅ pass the books to Twig
+    ]);
+}
+
 
     #[Route('/add', name: 'add')]
     public function add(ManagerRegistry $doctrine): Response
@@ -100,6 +110,7 @@ public function updateAuthor($id, AuthorrRepository $repo, Request $request, Man
     return $this->render('author/updateAuthor.html.twig', [
         'form' => $form->createView(),
     ]);
+
 }
 
 
@@ -127,4 +138,75 @@ public function addform(Request $request, ManagerRegistry $doctrine ): Response
 }
 
 
+#[Route('/bookform', name: 'bookform')]
+public function bookform(Request $request, ManagerRegistry $doctrine): Response
+{
+    $book = new Book();
+    $form = $this->createForm(BookType::class, $book);
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em = $doctrine->getManager();
+        $em->persist($book);
+        $em->flush();
+
+        return $this->redirectToRoute('showall'); // ou une autre route
+    }
+
+    return $this->render('author/bookform.html.twig', [
+        'form' => $form->createView(),
+    ]);
 }
+
+#[Route('/deleteBook/{id}', name: 'deleteBook')]
+public function deleteBook($id, ManagerRegistry $doctrine): Response
+{
+    $book = $doctrine->getRepository(Book::class)->find($id);
+
+    if (!$book) {
+        throw $this->createNotFoundException('Book not found with id ' . $id);
+    }
+
+    $em = $doctrine->getManager();
+    $em->remove($book);
+    $em->flush();
+
+    return $this->redirectToRoute('showall');               
+
+}
+
+#[Route('/updateBook/{id}', name: 'updateBook')]        
+public function updateBook($id, Request $request, ManagerRegistry $doctrine): Response
+{
+    $book = $doctrine->getRepository(Book::class)->find($id);                   
+    if (!$book) {
+        throw $this->createNotFoundException('Book not found with id ' . $id);
+    }               
+    $form = $this->createForm(BookType::class, $book);
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $em = $doctrine->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('showall');
+    }
+
+    return $this->render('author/updateBook.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+
+
+#[Route('/showBookDetails/{id}', name: 'showBookDetails')]
+public function showBookDetails($id, ManagerRegistry $doctrine): Response
+{
+    $book = $doctrine->getRepository(Book::class)->find($id);
+
+    if (!$book) {
+        throw $this->createNotFoundException('Book not found with id ' . $id);
+    }
+
+    return $this->render('author/showBookDetails.html.twig', [
+        'book' => $book,
+    ]);
+}}

@@ -1,0 +1,32 @@
+{# templates/author/updateBook.html.twig #}
+
+<h1>Update Book</h1>
+
+{{ form_start(form) }}
+
+
+
+<div>
+    {{ form_label(form.title, 'Title') }}
+    {{ form_widget(form.title) }}
+</div>
+
+
+<div>
+    {{ form_label(form.category, 'Category') }}
+    {{ form_widget(form.category) }}
+</div>
+
+<div>
+    {{ form_label(form.authorr, 'Author') }}
+    {{ form_widget(form.authorr) }}
+</div>
+
+<button type="submit">Save</button>
+
+{{ form_end(form) }}
+
+<p><a href="{{ path('showall') }}">back to list</a></p>
+
+
+

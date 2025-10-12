@@ -1,4 +1,4 @@
-<h1>List of authors 𓂃˖˳·˖ ִֶָ ⋆🌷͙⋆ ִֶָ˖·˳˖𓂃 ִֶָ</h1>
+<h1>List of authors 𓂃˖˳·˖ ִֶָ ⋆🪶⋆ ִֶָ˖·˳˖𓂃 ִֶָ</h1>
 
 <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
     <tr style="background-color: darkred; color: white;">
@@ -19,3 +19,28 @@
     </tr>
     {% endfor %}
 </table>
+<h1>List of books 𓂃˖˳·˖ ִֶָ ⋆📖⋆ ִֶָ˖·˳˖𓂃 ִֶָ</h1>
+<table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
+    <tr style="background-color: darkred; color: white;">
+        <th>Title</th>
+        <th>publication date </th>
+        <th>published</th>
+        <th>category</th>
+        <th>Author</th>
+         <th>Actions</th>   
+    </tr>
+  
+    {% for b in listbook %}
+    <tr>
+        <td>{{ b.title }}</td>
+        <td>{{ b.publicationDate ? b.publicationDate|date('Y-m-d') : '' }}</td>
+        <td>{{ b.published }}</td>
+        <td>{{ b.category }}</td>
+        <td>{{ b.authorr.username }}</td>
+        <td>
+            <a href="{{ path('deleteBook', {'id': b.id}) }}">delete</a>
+            <a href="{{ path('updateBook', {'id': b.id}) }}">update</a>
+            <a href="{{ path('showBookDetails', {'id': b.id}) }}">show</a>
+    </tr>
+    {% endfor %}
+</table>    
