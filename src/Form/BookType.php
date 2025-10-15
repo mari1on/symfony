@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Entity\Authorr;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,8 +26,14 @@ class BookType extends AbstractType
                 'widget' => 'single_text',
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('category', TextType::class, [
+            ->add('category', ChoiceType::class, [
                 'label' => 'Category',
+                'choices' => [
+                    'Mystery' => 'Mystery',
+                    'Science Fiction' => 'Science Fiction',
+                    'Horror' => 'Horror',
+                ],
+                'placeholder' => 'Choose a category',
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('authorr', EntityType::class, [
