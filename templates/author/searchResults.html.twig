@@ -1,0 +1,22 @@
+    <h1>Search Results</h1>     
+<table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
+    <tr style="background-color: darkred; color: white;border-collapse: collapse;                   
+    width: 100%; border-radius: 10px; overflow: hidde">
+        <th>id</th>
+        <th>username</th>
+        <th>email</th>
+        <th>Actions</th>    
+    </tr>
+    {% for author in list %}
+    <tr>
+        <td>{{ author.id }}</td>
+        <td>{{ author.username }}</td>
+        <td>{{ author.email }}</td>
+        <td>
+            <a href="{{ path('showDetails', { id: author.id }) }}">Show</a>
+            <a href="{{ path('updateAuthor', { id: author.id }) }}">Edit</a>
+            <a href="{{ path('deleteAuthor', { id: author.id }) }}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,10 +39,14 @@ class BookType extends AbstractType
             ])
             ->add('authorr', EntityType::class, [
                 'class' => Authorr::class,
-                'choice_label' => 'username', // uses username for dropdown
+                'choice_label' => 'username',
                 'label' => 'Author',
                 'placeholder' => 'Select an author',
                 'attr' => ['class' => 'form-control'],
+            ])
+            ->add('published', CheckboxType::class, [
+                'label'    => 'Published?',
+                'required' => false,
             ]);
     }
 

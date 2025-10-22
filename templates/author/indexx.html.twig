@@ -1,0 +1,4 @@
+<form method="get" action="{{ path('app_books') }}">
+    <input type="text" name="ref" value="{{ ref ?? '' }}" placeholder="Rechercher par référence">
+    <button type="submit">Rechercher</button>
+</form>

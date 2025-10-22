@@ -40,4 +40,26 @@ class AuthorrRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function showAllAuthors()
+    {
+  return $this->createQueryBuilder('a')
+  ->orderBy('a.username', 'ASC')
+            ->andWhere('a.email LIKE :condition')
+            ->setParameter('condition', 'LIKE %a%')
+
+            ->getQuery()
+            ->getResult();
+    }
+
+public function listAuthorByEmail()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'COUNT(b.id) AS numBooks')
+            ->leftJoin('a.books', 'b') // suppose que relation OneToMany : Authorr -> Book
+            ->groupBy('a.id')
+            ->orderBy('a.email', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
+

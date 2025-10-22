@@ -1,0 +1,23 @@
+<h1>Formulaire de l'auteur</h1>
+
+{% for message in app.flashes('success') %}
+    <div style="color: green;">{{ message }}</div>
+{% endfor %}
+
+{{ form_start(form) }}
+    <div>
+        {{ form_label(form.id_bk) }}
+        {{ form_widget(form.id_bk) }}
+    </div>
+    <div>
+        {{ form_label(form.title) }}
+        {{ form_widget(form.title) }}
+    </div>
+    <div>
+        {{ form_label(form.auth) }}
+        {{ form_widget(form.auth) }}
+    </div>
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+       

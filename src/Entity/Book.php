@@ -2,6 +2,8 @@
 // src/Entity/Book.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Authorr;
 
@@ -28,6 +30,17 @@ class Book
     #[ORM\ManyToOne(targetEntity: Authorr::class, inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Authorr $authorr = null;
+
+    /**
+     * @var Collection<int, Reader>
+     */
+    #[ORM\ManyToMany(targetEntity: Reader::class, mappedBy: 'Book')]
+    private Collection $readers;
+
+    public function __construct()
+    {
+        $this->readers = new ArrayCollection();
+    }
 
     // --------------------
     // Getters and setters
@@ -90,6 +103,33 @@ class Book
     public function setAuthorr(?Authorr $authorr): self
     {
         $this->authorr = $authorr;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reader>
+     */
+    public function getReaders(): Collection
+    {
+        return $this->readers;
+    }
+
+    public function addReader(Reader $reader): static
+    {
+        if (!$this->readers->contains($reader)) {
+            $this->readers->add($reader);
+            $reader->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReader(Reader $reader): static
+    {
+        if ($this->readers->removeElement($reader)) {
+            $reader->removeBook($this);
+        }
+
         return $this;
     }
 }

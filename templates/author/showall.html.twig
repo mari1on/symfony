@@ -27,11 +27,13 @@
     <tr style="background-color: darkred; color: white;border-collapse: collapse; width: 100%; border-radius: 10px; overflow: hidde">
         <th>Title</th>
         <th>Publication Date</th>
-        <th>Published</th>
+        <th>Published</th>  
         <th>Category</th>
-        <th>Author</th>
-        <th>Actions</th>   
+        <th>Author</th>   
+        <th>Actions</th>
     </tr>
+
+        
   
     {% for b in listbook %}
     <tr>
@@ -49,7 +51,41 @@
     {% endfor %}
 </table>
 
-<!-- 3D Animated Book -->
+<h1>List of Reader ⋆ 📚 ⋆ ִֶָ</h1>
+
+
+<table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
+    <tr style="background-color: darkred; color: white;border-collapse: collapse; width: 100%; border-radius: 10px; overflow: hidde">
+        <th>id</th>
+        <th>username</th>
+        <th>Actions</th>
+
+
+
+      
+    </tr>
+    {% for r in listreader %}
+    <tr>
+
+        <td>{{ r.id }}</td>
+        <td>{{ r.username }}</td>
+        <td>
+            <a href="{{ path('deleteReader', {'id': r.id}) }}">delete</a>
+            <a href="{{ path('updateReader', {'id': r.id}) }}">update</a>
+            <a href="{{ path('showReaderDetails', {'id': r.id}) }}">show</a>
+        </td>
+
+
+
+
+
+
+
+</tr>
+    {% endfor %}  
+
+
+<!-- 3D Animated Book >
 <div class="book">
   <span class="page turn"></span>
   <span class="page turn"></span>
@@ -138,3 +174,4 @@
   100% { transform: rotateY(30deg); z-index: 999; }
 }
 </style>
+--

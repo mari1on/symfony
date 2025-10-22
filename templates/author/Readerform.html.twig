@@ -1,0 +1,30 @@
+<h1 style="text-align: center; color: darkred; font-family: 'Georgia', serif;">
+    Reader form ⋆ 📚 ⋆ ִֶָ
+</h1>
+
+{% for message in app.flashes('success') %}
+    <div style="color: green; text-align: center; margin-bottom: 10px;">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{{ form_start(form, {'attr': {'style': 'width: 60%; margin: 0 auto; background-color: #fdfdfd; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);'}}) }}
+
+    <div style="margin-bottom: 15px;">
+        {{ form_label(form.username, 'Username', {'label_attr': {'style': 'font-weight: bold; color: #333;'}}) }}
+        {{ form_widget(form.username, {'attr': {'style': 'width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ccc;'}}) }}
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        {{ form_label(form.Book, 'Select Book(s)', {'label_attr': {'style': 'font-weight: bold; color: #333;'}}) }}
+        {{ form_widget(form.Book, {'attr': {'style': 'width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #ccc;'}}) }}
+    </div>
+
+    <div style="text-align: center;">
+        <button class="btn btn-primary" 
+                style="background-color: darkred; border: none; padding: 10px 25px; border-radius: 10px; color: white; cursor: pointer;">
+            {{ button_label|default('Save') }}
+        </button>
+    </div>
+
+{{ form_end(form) }}

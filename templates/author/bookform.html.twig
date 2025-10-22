@@ -30,6 +30,13 @@
     {{ form_errors(form.authorr) }}
 </div>
 
+<div>
+    {{ form_label(form.published) }}
+    {{ form_widget(form.published) }}
+    {{ form_errors(form.published) }}
+</div>
+
+
 <button type="submit">Save</button>
 
 {{ form_end(form) }}

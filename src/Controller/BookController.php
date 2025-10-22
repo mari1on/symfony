@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 
-
+use App\Repository\BookRepository;
 
 class BookController extends AbstractController
 {
@@ -109,4 +109,25 @@ public function showBookDetails($id, ManagerRegistry $doctrine): Response
     return $this->render('author/showBookDetails.html.twig', [
         'book' => $book,
     ]);
-}}
+}
+
+#[Route('/books', name: 'app_books')]
+public function index(Request $request, BookRepository $bookRepository): Response
+{
+    $ref = $request->query->get('ref');
+    if ($ref) {
+        $book = $bookRepository->searchBookByRef($ref);
+        $books = $book ? [$book] : [];
+    } else {
+        $books = $bookRepository->findAll();
+    }
+
+    return $this->render('authorr/index.html.twig', [
+        'books' => $books,
+        'ref' => $ref,
+    ]);
+}
+
+
+
+}
