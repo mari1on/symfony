@@ -127,23 +127,28 @@ public function index(Request $request, BookRepository $bookRepository): Respons
         'ref' => $ref,
     ]);
 }
-#[Route('/books', name: 'app_books')]
-public function showAll(Request $request, BookRepository $bookRepository): Response
+#[Route('/booksByAuthors', name: 'books_by_authors')]
+public function booksByAuthors(BookRepository $bookRepository): Response
 {
-    $id = $request->query->get('id');
-
-    if ($id) {
-        $books = [];
-        $book = $bookRepository->searchBookByRef((int) $id);
-        if ($book) {
-            $books[] = $book;
-        }
-    } else {
-        $books = $bookRepository->findAll();
-    }
+    $books = $bookRepository->booksListByAuthors();
 
     return $this->render('author/showall.html.twig', [
-        'books' => $books,
+        'listbook' => $books,
+        'list' => [],        // si tu veux juste afficher les livres
+        'listreader' => [],  // tu peux ajouter les lecteurs si nécessaire
+    ]);
+}
+
+
+#[Route('/books-special', name: 'books_special')]
+public function booksSpecial(BookRepository $bookRepository): Response
+{
+    $books = $bookRepository->findBooksBefore2023WithAuthorHavingMoreThan10Books();
+
+    return $this->render('author/showall.html.twig', [
+        'listbook' => $books,
+        'list' => [],         // si tu veux juste afficher les livres
+        'listreader' => [],   // ou ajouter les lecteurs si nécessaire
     ]);
 }
 

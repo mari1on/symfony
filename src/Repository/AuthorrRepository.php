@@ -72,5 +72,17 @@ public function searchBookByRef(int $id): ?Book
         ->getOneOrNullResult();
 }
 
+
+
+public function findAuthorsWithMoreThan10Books(): array
+{
+    return $this->createQueryBuilder('a')
+        ->join('a.books', 'b')
+        ->groupBy('a.id')
+        ->having('COUNT(b.id) > 10')
+        ->getQuery()
+        ->getResult();
+}
+
 }
 

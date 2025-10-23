@@ -311,6 +311,18 @@ $readers = $doctrine->getRepository(Reader::class)->findAll();
         ]);
     }
 
-     
+     #[Route('/books_between_dates', name: 'books_between_dates')]
+public function booksBetweenDates(BookRepository $bookRepository): Response
+{
+    $startDate = new \DateTime('2014-01-01');
+    $endDate = new \DateTime('2018-12-31');
+
+    $books = $bookRepository->findBooksBetweenDates($startDate, $endDate);
+
+    return $this->render('author/showall.html.twig', [
+        'listbook' => $books,
+    ]);
+}
+
 
 }

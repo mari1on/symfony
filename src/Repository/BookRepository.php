@@ -42,16 +42,37 @@ class BookRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-public function searchBookByRef(int $id): ?Book
+
+public function booksListByAuthors(): array
 {
-    return $this->createQueryBuilder('b')
-        ->andWhere('b.id = :id')
-        ->setParameter('id', $id)
+    // On utilise QueryBuilder pour créer la requête
+    return $this->createQueryBuilder('b')  // 'b' est l'alias pour Book
+        ->join('b.authorr', 'a')           // on fait la jointure avec l'auteur
+        ->addSelect('a')                   // sélectionner aussi l'auteur
+        ->orderBy('a.username', 'ASC')     // trier par nom d'auteur (ou email si tu veux)
         ->getQuery()
-        ->getOneOrNullResult();
+        ->getResult();                     // retourne le tableau d'objets Book
 }
 
-
-
+public function findBooksBefore2023WithAuthorHavingMoreThan10Books()
+    {
+        return $this->createQueryBuilder('b')
+            ->innerJoin('b.authorr', 'a')
+            ->groupBy('a.id')
+            ->having('COUNT(b.id) > 10')
+            ->andWhere('b.publicationDate < :date')
+            ->setParameter('date', new \DateTime('2023-01-01'))
+            ->getQuery()
+            ->getResult();
+    }
+// src/Repository/BookRepository.php
+public function searchBookByRef(int $ref): ?Book
+{
+    return $this->createQueryBuilder('b')
+                ->andWhere('b.id = :ref') // or change 'id' to your 'ref' field
+                ->setParameter('ref', $ref)
+                ->getQuery()
+                ->getOneOrNullResult();
+}
 
 }
