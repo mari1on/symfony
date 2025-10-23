@@ -15,6 +15,8 @@ use App\Entity\Book;
 use App\Form\BookType;
 use App\Entity\Reader;
 use App\Form\ReaderType;
+use App\Repository\BookRepository;
+
 
 
 final class AuthorrController extends AbstractController
@@ -30,7 +32,7 @@ final class AuthorrController extends AbstractController
 
 
 
-    
+    /*
    #[Route('/showall', name: 'showall')]
 public function showall(AuthorrRepository $repo, ManagerRegistry $doctrine): Response
 {
@@ -46,7 +48,40 @@ $readers = $doctrine->getRepository(Reader::class)->findAll();
         'listbook' => $books,
         'listreader' => $readers,
     ]);
+}*/
+
+
+#[Route('/showall', name: 'showall')]
+public function showall(Request $request, AuthorrRepository $repo, ManagerRegistry $doctrine, BookRepository $bookRepository): Response
+{
+    // Tous les auteurs
+    $authorrs = $repo->findAll() ?? [];
+
+    // Tous les lecteurs
+    $readers = $doctrine->getRepository(Reader::class)->findAll() ?? [];
+
+    // Recherche par ID pour les livres
+    $id = $request->query->get('id');
+
+    if ($id) {
+        $books = [];
+        $book = $bookRepository->searchBookByRef((int) $id);
+        if ($book) {
+            $books[] = $book;
+        }
+    } else {
+        $books = $bookRepository->findAll() ?? [];
+    }
+
+    // On renvoie toujours les 3 listes
+    return $this->render('author/showall.html.twig', [
+        'list' => $authorrs,       // auteurs
+        'listbook' => $books,      // livres
+        'listreader' => $readers,  // lecteurs
+    ]);
 }
+
+
 
 
     #[Route('/add', name: 'add')]

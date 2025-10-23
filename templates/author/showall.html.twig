@@ -1,5 +1,6 @@
 <h1>List of authors ⋆🪶⋆ ִֶ</h1>
 
+
 <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
     <tr style="background-color: darkred; color: white;border-collapse: collapse; width: 100%; border-radius: 10px; overflow: hidde">
         <th>Username</th>
@@ -21,7 +22,10 @@
 </table>
 
 <h1>List of books ⋆📖⋆ ִ ִֶָ</h1>
-
+<form method="get" action="{{ path('showall') }}">
+    <input type="text" name="id" placeholder="Rechercher par référence" value="{{ app.request.get('id') }}">
+    <button type="submit">Rechercher</button>
+</form>
 
 <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
     <tr style="background-color: darkred; color: white;border-collapse: collapse; width: 100%; border-radius: 10px; overflow: hidde">

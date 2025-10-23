@@ -61,5 +61,16 @@ public function listAuthorByEmail()
             ->getQuery()
             ->getResult();
     }
+
+    
+public function searchBookByRef(int $id): ?Book
+{
+    return $this->createQueryBuilder('b')
+        ->andWhere('b.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
+
 }
 

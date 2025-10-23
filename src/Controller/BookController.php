@@ -127,7 +127,25 @@ public function index(Request $request, BookRepository $bookRepository): Respons
         'ref' => $ref,
     ]);
 }
+#[Route('/books', name: 'app_books')]
+public function showAll(Request $request, BookRepository $bookRepository): Response
+{
+    $id = $request->query->get('id');
 
+    if ($id) {
+        $books = [];
+        $book = $bookRepository->searchBookByRef((int) $id);
+        if ($book) {
+            $books[] = $book;
+        }
+    } else {
+        $books = $bookRepository->findAll();
+    }
+
+    return $this->render('author/showall.html.twig', [
+        'books' => $books,
+    ]);
+}
 
 
 }
