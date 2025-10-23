@@ -316,7 +316,6 @@ public function booksBetweenDates(BookRepository $bookRepository): Response
 {
     $startDate = new \DateTime('2014-01-01');
     $endDate = new \DateTime('2018-12-31');
-
     $books = $bookRepository->findBooksBetweenDates($startDate, $endDate);
 
     return $this->render('author/showall.html.twig', [
