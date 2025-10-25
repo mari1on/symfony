@@ -1,5 +1,11 @@
 <h1>List of authors ⋆🪶⋆ ִֶ</h1>
 
+{% if happyMessage is defined %}
+    <div style="background-color:#f0f8ff; padding:15px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd;">
+        <h2>Citation du jour </h2>
+        <p style="font-size:18px; font-style:italic;">{{ happyMessage }}</p>
+    </div>
+{% endif %}
 
 <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;">
     <tr style="background-color: darkred; color: white;border-collapse: collapse; width: 100%; border-radius: 10px; overflow: hidde">

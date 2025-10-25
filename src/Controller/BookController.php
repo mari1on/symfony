@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Service\BookManagerService;
 
 use App\Repository\BookRepository;
 
@@ -151,6 +152,55 @@ public function booksSpecial(BookRepository $bookRepository): Response
         'listreader' => [],   // ou ajouter les lecteurs si nécessaire
     ]);
 }
+#[Route('/findbooksBetweenDates', name: 'findBooksBetweenDates')]
+public function findBooksBetweenDates(Request $request, BookRepository $bookRepository): Response
+{
+    // Get dates from request query (e.g., ?start=2023-01-01&end=2023-12-31)
+    $startDate = new \DateTime($request->query->get('start'));
+    $endDate = new \DateTime($request->query->get('end'));
+
+    // Use the repository method
+    $books = $bookRepository->findBooksBetweenDates($startDate, $endDate);
+
+    return $this->render('author/showall.html.twig', [
+        'listbook' => $books,
+        'list' => [],
+        'listreader' => [],
+    ]);
+
+}
+#[Route('/books/entre', name: 'books_entre')]
+public function livresEntreDates(BookRepository $repo)
+{
+    $dateDebut = new \DateTime('2014-01-01');
+    $dateFin = new \DateTime('2018-12-31');
+
+    $books = $repo->findLivresEntreDates($dateDebut, $dateFin);
+
+    return $this->render('book/liste.html.twig', [
+        'books' => $books,
+    ]);
+}
+
+ #[Route('/best-authors', name: 'best_authors')]
+    public function bestAuthors(BookManagerService $bookManagerService): Response
+    {
+        $authors = $bookManagerService->bestAuthors();
+
+        if (empty($authors)) {
+            return new Response("Aucun auteur avec plus de 3 livres trouvé 😢");
+        }
+
+        $output = "Auteurs avec plus de 3 livres : <br>";
+        foreach ($authors as $author) {
+            $output .= "- " . $author->getName() . "<br>";
+        }
+
+        return new Response($output);
+    }
+
+
+
 
 
 }

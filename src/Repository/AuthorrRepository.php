@@ -84,5 +84,32 @@ public function findAuthorsWithMoreThan10Books(): array
         ->getResult();
 }
 
+    
+// Create the DQL query
+   
+
+public function showAllAuthorsDQL()
+{
+    $query = $this->getEntityManager()
+                ->createQuery('SELECT a
+         FROM App\Entity\Authorr a
+         WHERE a.username LIKE :condition ORDER BY a.username ASC')
+         ->setParameters(['condition' => '%a%'])
+
+    ;
+    return $query->getResult();
+    
+}
+public function countBooksByCategory(string $category): int
+{
+    return (int) $this->createQueryBuilder('b')
+        ->select('COUNT(b.id)')
+        ->andWhere('b.category = :category')
+        ->setParameter('category', $category)
+        ->getQuery()
+        ->getSingleScalarResult();
 }
 
+
+        
+}

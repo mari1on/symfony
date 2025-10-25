@@ -1,0 +1,8 @@
+<h1>Livres publiés entre 2014 et 2018</h1>
+<ul>
+    {% for book in books %}
+        <li>{{ book.titre }} — {{ book.datePublication|date('Y-m-d') }}</li>
+    {% else %}
+        <li>Aucun livre trouvé.</li>
+    {% endfor %}
+</ul>

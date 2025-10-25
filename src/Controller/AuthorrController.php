@@ -17,7 +17,7 @@ use App\Entity\Reader;
 use App\Form\ReaderType;
 use App\Repository\BookRepository;
 
-
+use App\Service\HappyQuote; 
 
 final class AuthorrController extends AbstractController
 {
@@ -50,10 +50,10 @@ $readers = $doctrine->getRepository(Reader::class)->findAll();
     ]);
 }*/
 
-
+/*
 #[Route('/showall', name: 'showall')]
 public function showall(Request $request, AuthorrRepository $repo, ManagerRegistry $doctrine, BookRepository $bookRepository): Response
-{
+{ 
     // Tous les auteurs
     $authorrs = $repo->findAll() ?? [];
 
@@ -78,6 +78,48 @@ public function showall(Request $request, AuthorrRepository $repo, ManagerRegist
         'list' => $authorrs,       // auteurs
         'listbook' => $books,      // livres
         'listreader' => $readers,  // lecteurs
+    ]);
+       $message = $messageGenerator->getHappyMessage(); 
+                   return new Response("<h1>Citation du jour :</h1><p>$message</p>");
+}
+
+*/
+#[Route('/showall', name: 'showall')]
+public function showall(
+    Request $request, 
+    AuthorrRepository $repo, 
+    ManagerRegistry $doctrine, 
+    BookRepository $bookRepository,
+    HappyQuote $happyQuote   // Injection du service
+): Response
+{ 
+    // Tous les auteurs
+    $authorrs = $repo->findAll() ?? [];
+
+    // Tous les lecteurs
+    $readers = $doctrine->getRepository(Reader::class)->findAll() ?? [];
+
+    // Recherche par ID pour les livres
+    $id = $request->query->get('id');
+    if ($id) {
+        $books = [];
+        $book = $bookRepository->searchBookByRef((int) $id);
+        if ($book) {
+            $books[] = $book;
+        }
+    } else {
+        $books = $bookRepository->findAll() ?? [];
+    }
+
+    // Récupération du message positif
+    $message = $happyQuote->getHappyMessage();
+
+    // On renvoie toujours les 3 listes + le message
+    return $this->render('author/showall.html.twig', [
+        'list' => $authorrs,
+        'listbook' => $books,
+        'listreader' => $readers,
+        'happyMessage' => $message,   // Passage à la vue
     ]);
 }
 
@@ -322,6 +364,47 @@ public function booksBetweenDates(BookRepository $bookRepository): Response
         'listbook' => $books,
     ]);
 }
+
+
+#[Route('/showallAuthorsDQL', name: 'showallAuthorsDQL')]
+public function showallAuthorsDQL(AuthorrRepository $repo, ManagerRegistry $doctrine): Response
+{
+    $authorrs= $repo->showAllAuthorsDQL();
+       $bookRepo = $doctrine->getRepository(Book::class);
+    $books = $bookRepo->findAll(); // ✅ now $books is defined
+$readers = $doctrine->getRepository(Reader::class)->findAll();
+    return $this->render('author/showall.html.twig', [
+        'list' => $authorrs,
+         'listbook' => $books,
+        'listreader' => $readers,
+       
+    ]);
+}
+#[Route('/countRomanceBooks', name: 'countRomanceBooks')]
+public function countRomanceBooks(BookRepository $bookRepository): Response
+{
+    $count = $bookRepository->countBooksByCategory('Romance');
+
+    return $this->render('author/countbooks.html.twig', [
+        'category' => 'Romance',
+        'count' => $count,
+    ]);
+}
+
+#[Route(path:'/afficher',name:'afficher')]
+
+public function afficher():Response{
+    return $this->render(view:'author/showall.html.twig');
+}
+
+    #[Route('/', name: 'home')]
+       public function home(MessageGenerator $messageGenerator): Response 
+        {   
+             $message = $messageGenerator->getHappyMessage(); 
+                   return new Response("<h1>Citation du jour :</h1><p>$message</p>");   }
+
+ 
+
 
 
 }

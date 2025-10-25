@@ -75,4 +75,45 @@ public function searchBookByRef(int $ref): ?Book
                 ->getOneOrNullResult();
 }
 
+
+/*
+public function findBooksBetweenDates(\DateTimeInterface $startDate, \DateTimeInterface $endDate)
+{
+    return $this->createQueryBuilder('b')
+        ->andWhere('b.publicationDate BETWEEN :start AND :end')
+        ->setParameter('start', $startDate)
+        ->setParameter('end', $endDate)
+        ->getQuery()
+        ->getResult();
+}*/
+
+// src/Repository/BookRepository.php
+public function countBooksByCategory(string $category): int
+{
+    return (int) $this->createQueryBuilder('b')
+        ->select('COUNT(b.id)')
+        ->andWhere('b.category = :category')
+        ->setParameter('category', $category)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+
+public function findBooksBetweenDates(\DateTime $startDate, \DateTime $endDate): array
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            'SELECT b
+             FROM App\Entity\Book b
+             WHERE b.publishedAt BETWEEN :start AND :end
+             ORDER BY b.publishedAt ASC'
+        )
+        ->setParameter('start', $startDate)
+        ->setParameter('end', $endDate);
+
+        return $query->getResult();
+    }
+
+
+
 }
